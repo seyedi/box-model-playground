@@ -1,4 +1,66 @@
-'use strict';
+// code on GitHub
+// https://github.com/carolineartz/learning-box-model
+// http://www.carolineartz.me
+
+// rebound of this jQuery demo http://codepen.io/guyroutledge/pen/hgpez
+
+angular.module('cssBoxModel', ['ngAnimate', 'ngSanitize', 'ui.router','ui.slider'])
+
+
+.config(['$stateProvider', '$locationProvider', function($stateProvider, $locationProvider) {
+    $stateProvider.state('home', {
+            url: '',
+            controller: 'MainCtrl',
+            views: {
+              'diagram': {
+                templateUrl: 'http://codepen.io/carolineartz/pen/yywJrJ.html',
+                controller: 'MainCtrl'
+              }
+            }
+            
+        });
+}])
+
+.directive('labelPositionV', function() {
+    return {
+        restrict: 'AE',
+        scope: {},
+        link: function(scope, element, attrs, ctrl) {
+            var id = attrs.id;
+            attrs.$observe('labelPositionTop', function(value) {
+                var styleTop = "<style> #" + id + "::before{top:" + ((value / 2.8) - 12) + "px;}</style>";
+                angular.element(document).find('head').append(styleTop);
+            });
+            attrs.$observe('labelPositionBottom', function(value) {
+                var styleBottom = "<style> #" + id + "::after{bottom:" + ((value / 3) - 13) + "px;}</style>";
+                angular.element(document).find('head').append(styleBottom);
+            });
+        }
+    };
+})
+
+.directive('labelPositionH', function() {
+    return {
+        restrict: 'AE',
+        scope: {},
+        link: function(scope, element, attrs, ctrl) {
+            var id = attrs.id;
+            attrs.$observe('labelPositionRight', function(value) {
+                var styleRight = "<style> #" + id + "::after{right:" + (1*((value / 2.8) - 12)) + "px;}</style>";
+                angular.element(document).find('head').append(styleRight);
+            });
+            attrs.$observe('labelPositionLeft', function(value) {
+                var styleLeft = "<style> #" + id + "::before{left:" + (1*((value / 3)-12)) + "px;}</style>";
+                angular.element(document).find('head').append(styleLeft);
+            });
+
+        }
+    };
+});
+
+// Controller
+// **********************************************************************
+
 var app = angular.module('cssBoxModel');
 
 app.controller('MainCtrl', function ($scope) {
@@ -195,3 +257,4 @@ app.controller('MainCtrl', function ($scope) {
     }
 
 });
+
